@@ -9,10 +9,10 @@ import sheep.graphics.Image;
  */
 public class RightWall extends Wall {
 
-    public RightWall(Image image, int width, int height) {
-        super(image, width, height);
+    public RightWall(Image image, int width, int height, int gridSize) {
+        super(image, width, height, gridSize);
 
-        setScale(mLineWidth, mHeight);
-        setPosition(mWidth - getScale().getX() * 2, 0); //TODO fix
+        setScale(mGridSize, mHeight);
+        setPosition(mWidth - getScale().getX() * 2 + 1, 0); //TODO fix
     }
 }

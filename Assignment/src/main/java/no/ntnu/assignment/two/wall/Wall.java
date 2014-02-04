@@ -10,21 +10,18 @@ import sheep.graphics.Image;
  * Created by bvx89 on 1/31/14.
  */
 public abstract class Wall extends Sprite {
-    protected Image mImage;
     protected int mWidth;
     protected int mHeight;
 
-    protected static float mLineWidth;
-    protected static float mLineHeight;
-    private final static float PERCENTAGE = 0.01f;
+    protected static int mGridSize;
 
-    public Wall(Image image, int width, int height) {
-        mImage = image;
+    public Wall(Image image, int width, int height, int gridSize) {
+        super(image);
         mWidth = width;
         mHeight = height;
 
-        mLineWidth  = width  * PERCENTAGE;
-        mLineHeight = height * PERCENTAGE;
+        mGridSize = gridSize;
+
     }
 
 }

@@ -10,16 +10,16 @@ public abstract class WallFactory {
     public final static int RIGHT = 1;
     public final static int CENTER = 2;
 
-    public static Wall createWall(int wall, Image image, int width, int height) throws IllegalArgumentException {
+    public static Wall createWall(int wall, Image image, int width, int height, int gridSize) throws IllegalArgumentException {
 
 
         switch (wall) {
             case LEFT:
-                return new LeftWall(image, width, height);
+                return new LeftWall(image, width, height, gridSize);
             case RIGHT:
-                return new RightWall(image, width, height);
+                return new RightWall(image, width, height, gridSize);
             case CENTER:
-                return new CenterWall(image, width, height);
+                return new CenterWall(image, width, height, gridSize);
             default:
                 throw new IllegalArgumentException();
 

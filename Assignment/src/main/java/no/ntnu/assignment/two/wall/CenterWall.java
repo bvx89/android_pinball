@@ -10,14 +10,11 @@ import sheep.graphics.Image;
  */
 public class CenterWall extends Wall {
 
-    public CenterWall(Image image, int width, int height) {
-        super(image, width, height);
+    public CenterWall(Image image, int width, int height, int gridSize) {
+        super(image, width, height, gridSize);
 
-        setScale(mWidth, mLineHeight);
+        setScale(mWidth, mGridSize);
         setPosition(0, mHeight / 2 - getScale().getY());
 
-
-        Log.d("RIGHT", "scale:" + getScale());
-        Log.d("RIGHT", "position:" + getPosition());
     }
 }

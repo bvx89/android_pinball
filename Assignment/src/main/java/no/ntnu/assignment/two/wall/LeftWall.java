@@ -10,10 +10,10 @@ import sheep.graphics.Image;
  * Created by bvx89 on 1/31/14.
  */
 public class LeftWall extends Wall {
-    public LeftWall(Image image, int width, int height) {
-        super(image, width, height);
+    public LeftWall(Image image, int width, int height, int gridSize) {
+        super(image, width, height, gridSize);
 
-        setScale(mLineWidth, mHeight);
-        setPosition(0, 0); //TODO fix
+        setPosition(mGridSize / 2 - 5, 0);
+        setScale(mGridSize, mHeight);
     }
 }

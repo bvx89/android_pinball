@@ -42,42 +42,50 @@ public class Ball extends Sprite {
                 distance.getY() / length * getSpeed().getLength());
     }
 
+    /*
     @Override
     public boolean collides(Sprite other){
-        if(other.getBoundingBox().intersects(getBoundingBox())){
+        if(other.getBoundingBox().intersects(getBoundingBox())) {
             // Left Wall Collision
-            if (other instanceof LeftWall){
-                if(getSpeed().getX() < 0)
+            if (other instanceof LeftWall) {
+                if (getSpeed().getX() < 0)
                     return true;
                 else
                     return false;
+
             // Right Wall Collision
-            }else if(other instanceof RightWall){
-                if(getSpeed().getX() > 0)
+            } else if (other instanceof RightWall) {
+                if (getSpeed().getX() > 0)
                     return true;
                 else
                     return false;
-            }else if (other instanceof Paddle){
+
+            } else if (other instanceof Paddle) {
+
                 // Top Paddle Collision
-                if((Paddle)other.isOnTop()){
+                if (((Paddle) other).isOnTop()) {
                     if (getSpeed().getY() < 0)
                         return true;
                     else
                         return false;
+
                 // Bottom Paddle Collision
-                }else{
+                } else {
                     if (getSpeed().getY() > 0)
                         return true;
                     else
                         return false;
                 }
-            }else{
-                return true;
+
+            } else {
+                return false;
             }
-        }else{
+
+        } else {
             return false;
         }
     }
+    */
 
 
 }

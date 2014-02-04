@@ -2,62 +2,9 @@
 <merger>
 
     <dataSet config="main" >
-        <source path="C:\Kode\Android\android_pong\Assignment\src\main\res" >
+        <source path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/res" >
             <file
-                name="chopper_static"
-                path="C:\Kode\Android\android_pong\Assignment\src\main\res\drawable\chopper_static.png"
-                qualifiers=""
-                type="drawable" />
-            <file
-                name="white_pixel"
-                path="C:\Kode\Android\android_pong\Assignment\src\main\res\drawable\white_pixel.png"
-                qualifiers=""
-                type="drawable" />
-            <file
-                name="ic_launcher"
-                path="C:\Kode\Android\android_pong\Assignment\src\main\res\drawable-hdpi\ic_launcher.png"
-                qualifiers="hdpi"
-                type="drawable" />
-            <file
-                name="ic_launcher"
-                path="C:\Kode\Android\android_pong\Assignment\src\main\res\drawable-mdpi\ic_launcher.png"
-                qualifiers="mdpi"
-                type="drawable" />
-            <file
-                name="ic_launcher"
-                path="C:\Kode\Android\android_pong\Assignment\src\main\res\drawable-xhdpi\ic_launcher.png"
-                qualifiers="xhdpi"
-                type="drawable" />
-            <file
-                name="ic_launcher"
-                path="C:\Kode\Android\android_pong\Assignment\src\main\res\drawable-xxhdpi\ic_launcher.png"
-                qualifiers="xxhdpi"
-                type="drawable" />
-            <file
-                name="activity_main"
-                path="C:\Kode\Android\android_pong\Assignment\src\main\res\layout\activity_main.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="fragment_main"
-                path="C:\Kode\Android\android_pong\Assignment\src\main\res\layout\fragment_main.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="main"
-                path="C:\Kode\Android\android_pong\Assignment\src\main\res\menu\main.xml"
-                qualifiers=""
-                type="menu" />
-            <file
-                path="C:\Kode\Android\android_pong\Assignment\src\main\res\values\dimens.xml"
-                qualifiers="" >
-                <dimen name="activity_horizontal_margin" >16dp
-                </dimen>
-                <dimen name="activity_vertical_margin" >16dp
-                </dimen>
-            </file>
-            <file
-                path="C:\Kode\Android\android_pong\Assignment\src\main\res\values\strings.xml"
+                path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/res/values/strings.xml"
                 qualifiers="" >
                 <string name="action_settings" >Settings
                 </string>
@@ -67,7 +14,15 @@
                 </string>
             </file>
             <file
-                path="C:\Kode\Android\android_pong\Assignment\src\main\res\values\styles.xml"
+                path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/res/values/dimens.xml"
+                qualifiers="" >
+                <dimen name="activity_horizontal_margin" >16dp
+                </dimen>
+                <dimen name="activity_vertical_margin" >16dp
+                </dimen>
+            </file>
+            <file
+                path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/res/values/styles.xml"
                 qualifiers="" >
 
                 <style
@@ -78,17 +33,61 @@
                 </style>
             </file>
             <file
-                path="C:\Kode\Android\android_pong\Assignment\src\main\res\values-w820dp\dimens.xml"
+                name="white_pixel"
+                path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/res/drawable/white_pixel.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="chopper_static"
+                path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/res/drawable/chopper_static.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/res/drawable-xhdpi/ic_launcher.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/res/drawable-mdpi/ic_launcher.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/res/drawable-xxhdpi/ic_launcher.png"
+                qualifiers="xxhdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/res/drawable-hdpi/ic_launcher.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/res/values-w820dp/dimens.xml"
                 qualifiers="w820dp" >
                 <dimen name="activity_horizontal_margin" >64dp
                 </dimen>
             </file>
+            <file
+                name="main"
+                path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/res/menu/main.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                name="activity_main"
+                path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/res/layout/activity_main.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="fragment_main"
+                path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/res/layout/fragment_main.xml"
+                qualifiers=""
+                type="layout" />
         </source>
-        <source path="C:\Kode\Android\android_pong\Assignment\build\res\rs\debug" />
-        <source path="C:\Kode\Android\android_pong\Assignment\build\res\generated\debug" />
+        <source path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/build/res/rs/debug" />
     </dataSet>
     <dataSet config="debug" >
-        <source path="C:\Kode\Android\android_pong\Assignment\src\debug\res" />
+        <source path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/debug/res" />
     </dataSet>
 
 </merger>

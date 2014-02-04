@@ -3,6 +3,8 @@ package no.ntnu.assignment.two.model;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
+import sheep.collision.CollisionListener;
+import sheep.game.Sprite;
 import sheep.graphics.Image;
 import sheep.input.TouchListener;
 
