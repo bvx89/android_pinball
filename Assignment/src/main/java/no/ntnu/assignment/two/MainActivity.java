@@ -48,6 +48,8 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
+        PongMachine.getInstance().reset();
+
         init();
     }
 
