@@ -97,8 +97,19 @@ public class PongMachine extends State implements TouchListener {
     }
 
     public void newRound() {
-        double xDirection = Math.random() * 360 - 180;
-        mBall.setSpeed((float)xDirection, 180f);
+        // Set new random X-Speed for the ball
+        float speedX = (float)Math.random() * 360 - 180;
+
+        // Set new Y-speed depending on who's starting
+        float speedY = (state.isPlayerOneStarting() ? -180f : 180f);
+
+        // Calculate the ball placement
+        float posX = MainActivity.WINDOW_WIDTH / 2;
+        float posY = MainActivity.WINDOW_HEIGHT / 2;
+
+        // Set it
+        mBall.setSpeed(speedX, speedY);
+        mBall.setPosition(posX, posY);
     }
 
     public void reset() {
