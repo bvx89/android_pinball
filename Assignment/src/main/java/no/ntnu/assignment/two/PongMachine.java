@@ -11,8 +11,10 @@ import android.view.MotionEvent;
 import java.util.ArrayList;
 
 import no.ntnu.assignment.two.model.Ball;
+import no.ntnu.assignment.two.model.BallPositionListener;
 import no.ntnu.assignment.two.model.Paddle;
 import no.ntnu.assignment.two.model.Player;
+import no.ntnu.assignment.two.model.Robot;
 import no.ntnu.assignment.two.wall.Wall;
 import no.ntnu.assignment.two.wall.WallFactory;
 import sheep.collision.CollisionListener;
@@ -99,12 +101,23 @@ public class PongMachine extends State implements TouchListener {
                             false);
 
         // Create player two
+        /*
         mPaddleTwo = new Player(img,
                 boardWidth,
                 MainActivity.WINDOW_HEIGHT,
                 gridSize,
                 PADDLE_WIDTH,
                 true);
+        */
+
+        mPaddleTwo = new Robot(img,
+                boardWidth,
+                MainActivity.WINDOW_HEIGHT,
+                gridSize,
+                PADDLE_WIDTH,
+                true);
+
+
 
         mBall = new Ball(img,
                         gridSize,
@@ -120,7 +133,7 @@ public class PongMachine extends State implements TouchListener {
         float speedX = (float)Math.random() * 360 - 180;
 
         // Set new Y-speed depending on who's starting
-        float speedY = (state.isPlayerOneStarting() ? -180f : 180f);
+        float speedY = (state.isPlayerOneStarting() ? -230f : 230f);
 
         // Calculate the ball placement
         float posX = MainActivity.WINDOW_WIDTH / 2;
@@ -167,6 +180,16 @@ public class PongMachine extends State implements TouchListener {
         mPaddleOne.update(dt);
         mPaddleTwo.update(dt);
 
+        // Notify if PaddleOne is robot
+        if (mPaddleOne instanceof Robot) {
+            ((Robot) mPaddleOne).notifyPosition(mBall.getX(), mBall.getY());
+        }
+
+        // Notify if PaddleTwo is robot
+        if (mPaddleTwo instanceof Robot) {
+            ((Robot) mPaddleTwo).notifyPosition(mBall.getX(), mBall.getY());
+        }
+
 		if(mBall.collides(mPaddleOne)){
 			mBall.handlePaddleCollision(mPaddleOne);
 		}else if(mBall.collides(mPaddleTwo)){
@@ -175,9 +198,11 @@ public class PongMachine extends State implements TouchListener {
 
 		if(mBall.getY() > MainActivity.WINDOW_HEIGHT){
 			topScore.setLabel("" + (Integer.parseInt(topScore.getLabel()) + 1));
+            state.setPlayerOneStarting(false);
 			newRound();
 		}else if(mBall.getY() + mBall.getScale().getY() < 0){
 			bottomScore.setLabel("" + (Integer.parseInt(bottomScore.getLabel()) + 1));
+            state.setPlayerOneStarting(true);
 			newRound();
 		}
 
@@ -215,21 +240,6 @@ public class PongMachine extends State implements TouchListener {
      */
     @Override
     public boolean onTouchDown(MotionEvent event) {
-        return handleTouch(event);
-    }
-
-    @Override
-    public boolean onTouchUp(MotionEvent event) {
-        return false;
-    }
-
-    @Override
-    public boolean onTouchMove(MotionEvent event) {
-        return handleTouch(event);
-    }
-
-    private boolean handleTouch(MotionEvent event) {
-
         // Event is on top if it's in the upper bound of the screen
         boolean isTop = event.getY() < MainActivity.WINDOW_HEIGHT / 2;
 
@@ -241,6 +251,29 @@ public class PongMachine extends State implements TouchListener {
         // Send event to PaddleTwo if in the right section
         if (mPaddleTwo instanceof TouchListener && mPaddleTwo.isOnTop() == isTop) {
             return ((Player) mPaddleTwo).onTouchDown(event);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean onTouchUp(MotionEvent event) {
+        return false;
+    }
+
+    @Override
+    public boolean onTouchMove(MotionEvent event) {
+        // Event is on top if it's in the upper bound of the screen
+        boolean isTop = event.getY() < MainActivity.WINDOW_HEIGHT / 2;
+
+        // Send event to PaddleOne if in the right section
+        if (mPaddleOne instanceof TouchListener && mPaddleOne.isOnTop() == isTop) {
+            return ((Player) mPaddleOne).onTouchMove(event);
+        }
+
+        // Send event to PaddleTwo if in the right section
+        if (mPaddleTwo instanceof TouchListener && mPaddleTwo.isOnTop() == isTop) {
+            return ((Player) mPaddleTwo).onTouchMove(event);
         }
 
         return false;

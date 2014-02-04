@@ -13,7 +13,7 @@ import sheep.math.Vector2;
  */
 public class Ball extends Sprite {
 	private int mHeight;
-	private final float speedIncrease = 1.05f;
+	private final float speedIncrease = 1.1f;
 
 	public Ball(Image image, int size, int x, int y, int mHeight){
 		super(image);

@@ -1,6 +1,7 @@
 package no.ntnu.assignment.two.model;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import sheep.collision.CollisionListener;
@@ -17,14 +18,14 @@ public class Player extends Paddle implements TouchListener {
         super(image, boardWidth, boardHeight, gridSize, width, OnTop);
     }
 
-    public void handleTouch(float touchX) {
+    public void handleMove(float moveX) {
         float newX;
-        if (touchX - mWidth < mGridSize*2) { // Left
+        if (moveX - mWidth < mGridSize*2) { // Left
             newX = mGridSize*2;
-        } else if (touchX + mWidth > mBoardWidth) { // Right
+        } else if (moveX + mWidth > mBoardWidth) { // Right
             newX = mBoardWidth - mWidth * 2 + 1;
         } else {
-            newX = touchX - mWidth - 1;
+            newX = moveX - mWidth - 1;
         }
 
         setPosition(newX, getY());
@@ -32,7 +33,7 @@ public class Player extends Paddle implements TouchListener {
 
     @Override
     public boolean onTouchDown(MotionEvent event) {
-        handleTouch(event.getX());
+        handleMove(event.getX());
         return true;
     }
 
@@ -43,7 +44,7 @@ public class Player extends Paddle implements TouchListener {
 
     @Override
     public boolean onTouchMove(MotionEvent event) {
-        handleTouch(event.getX());
+        handleMove(event.getX());
         return true;
     }
 }
