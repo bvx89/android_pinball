@@ -2,10 +2,10 @@
 <merger>
 
     <dataSet config="main" >
-        <source path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/assets" />
+        <source path="C:\Kode\Android\android_pong\Assignment\src\main\assets" />
     </dataSet>
     <dataSet config="debug" >
-        <source path="/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/debug/assets" />
+        <source path="C:\Kode\Android\android_pong\Assignment\src\debug\assets" />
     </dataSet>
 
 </merger>

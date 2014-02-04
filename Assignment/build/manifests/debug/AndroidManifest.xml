@@ -1,4 +1,4 @@
-<!-- From: file:/home/bvx89/School/TDT4240/AssignmentTwo/Assignment/src/main/AndroidManifest.xml --><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="no.ntnu.assignment.two">
+<!-- From: file:/C:/Kode/Android/android_pong/Assignment/src/main/AndroidManifest.xml --><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="no.ntnu.assignment.two">
 
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="19"/>
 
