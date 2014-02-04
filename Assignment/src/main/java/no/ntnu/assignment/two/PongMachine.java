@@ -132,9 +132,17 @@ public class PongMachine extends State implements TouchListener {
         mPaddleOne.update(dt);
         mPaddleTwo.update(dt);
 
-        for (Wall w : mWalls) {
-            w.update(dt);
-        }
+		if(mBall.collides(mPaddleOne)){
+			mBall.handlePaddleCollision(mPaddleOne);
+		}else if(mBall.collides(mPaddleTwo)){
+			mBall.handlePaddleCollision(mPaddleTwo);
+		}
+
+		for (Wall w : mWalls) {
+			w.update(dt);
+			if(mBall.collides(w))
+				mBall.handleWallCollision(w);
+		}
     }
 
     @Override

@@ -1,5 +1,6 @@
 package no.ntnu.assignment.two.model;
 
+import no.ntnu.assignment.two.wall.CenterWall;
 import no.ntnu.assignment.two.wall.LeftWall;
 import no.ntnu.assignment.two.wall.RightWall;
 import no.ntnu.assignment.two.wall.Wall;
@@ -11,70 +12,75 @@ import sheep.math.Vector2;
  * Created by oknak_000 on 2/4/14.
  */
 public class Ball extends Sprite {
-    private int mHeight;
-    public Ball(Image image, int size, int x, int y, int mHeight){
-        super(image);
-        setScale(size,size);
-        setPosition(x,y);
-        this.mHeight = mHeight;
-    }
+	private int mHeight;
+	private final float speedIncrease = 1.05f;
 
-    public void handleWallCollision(Wall wall){
-        if(getX() > wall.getX() && getSpeed().getX() < 0 ||
-           getX() < wall.getX() && getSpeed().getX() > 0){
-            setSpeed(-getSpeed().getX(), getSpeed().getY());
-        }
-    }
+	public Ball(Image image, int size, int x, int y, int mHeight){
+		super(image);
+		setScale(size,size);
+		setPosition(x,y);
+		this.mHeight = mHeight;
+	}
 
-    public void handlePaddleCollision(Paddle paddle){
-        // Moves paddle center up or down according to what paddle the ball hits
-        float addedCircleCenter = paddle.getScale().getX() / 4;
-        if (paddle.getY() > mHeight / 2)
-            addedCircleCenter = -addedCircleCenter;
+	public void handleWallCollision(Wall wall){
+		if(!(wall instanceof CenterWall)){
+			if(getX() > wall.getX() && getSpeed().getX() < 0 ||
+					getX() < wall.getX() && getSpeed().getX() > 0){
+				setSpeed(-getSpeed().getX(), getSpeed().getY());
+			}
+		}
+	}
 
-        // Handles collision like paddle is a ball, with center paddle.width / 4 lower than it's actual center to create more interesting ball paths
-        Vector2 distance = new Vector2((getX() + getScale().getX() / 2) - (paddle.getX() + paddle.getScale().getX() / 2),
-                (getY() + getScale().getY() / 2) - (paddle.getY() + paddle.getScale().getY() / 2) + addedCircleCenter);
+	public void handlePaddleCollision(Paddle paddle){
+		// Moves paddle center up or down according to what paddle the ball hits
+		float addedCircleCenter = paddle.getScale().getX() / 4;
+		if (paddle.getY() > mHeight / 2)
+			addedCircleCenter = -addedCircleCenter;
 
-        // Sets new velocity vector, but keeps the same total speed.
-        float length = distance.getLength();
-        setSpeed(distance.getX() / length * getSpeed().getLength(),
-                distance.getY() / length * getSpeed().getLength());
-    }
+		// Handles collision like paddle is a ball, with center paddle.width / 4 lower than it's actual center to create more interesting ball paths
+		Vector2 distance = new Vector2((getX() + getScale().getX() - (paddle.getX() + paddle.getScale().getX())),
+				(getY() + getScale().getY()) - (paddle.getY() + paddle.getScale().getY()) + addedCircleCenter);
 
-    /*
-    @Override
+		// Sets new velocity vector, but keeps the same total speed.
+		float length = distance.getLength();
+		setSpeed(distance.getX() / length * getSpeed().getLength() * speedIncrease,
+				distance.getY() / length * getSpeed().getLength()  * speedIncrease);
+	}
+
+
+   /* @Override
     public boolean collides(Sprite other){
-        if(other.getBoundingBox().intersects(getBoundingBox())) {
+        if(getBoundingBox().intersects(other.getBoundingBox())) {
             // Left Wall Collision
             if (other instanceof LeftWall) {
-                if (getSpeed().getX() < 0)
+                if (getSpeed().getX() < 0){
                     return true;
-                else
+				}else{
                     return false;
-
+				}
             // Right Wall Collision
             } else if (other instanceof RightWall) {
-                if (getSpeed().getX() > 0)
+                if (getSpeed().getX() > 0){
                     return true;
-                else
+				}else{
                     return false;
-
+				}
             } else if (other instanceof Paddle) {
 
                 // Top Paddle Collision
                 if (((Paddle) other).isOnTop()) {
-                    if (getSpeed().getY() < 0)
+                    if (getSpeed().getY() < 0){
                         return true;
-                    else
+					}else{
                         return false;
-
+					}
                 // Bottom Paddle Collision
                 } else {
-                    if (getSpeed().getY() > 0)
+                    if (getSpeed().getY() > 0){
                         return true;
-                    else
+					}else{
                         return false;
+					}
                 }
 
             } else {
@@ -85,7 +91,7 @@ public class Ball extends Sprite {
             return false;
         }
     }
-    */
+*/
 
 
 }
