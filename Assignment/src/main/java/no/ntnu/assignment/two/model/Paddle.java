@@ -27,10 +27,7 @@ public abstract class Paddle extends Sprite {
 
         mOnTop = onTop;
 
-        setScale(width, gridSize);
 
-        float yPos = (onTop ? gridSize * 3 : boardHeight - gridSize * 5);
-        setPosition((gridSize * 2 + boardWidth) / 2 - width/2, yPos);
 
         Log.d(TAG, "Pos X: " + getX() + ", Pos y: " + getY());
         Log.d(TAG, "Scale X: " + getScale().getX() + ", Scale y: " + getScale().getY());
@@ -40,5 +37,11 @@ public abstract class Paddle extends Sprite {
         return mOnTop;
     }
 
+    public void resetPosition() {
+        setScale(mWidth, mGridSize);
+
+        float yPos = (mOnTop ? mGridSize * 3 : mBoardHeight - mGridSize * 5);
+        setPosition((mGridSize * 2 + mBoardWidth) / 2 - mWidth/2, yPos);
+    }
 
 }

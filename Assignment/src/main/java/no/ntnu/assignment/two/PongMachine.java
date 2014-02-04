@@ -26,9 +26,12 @@ import sheep.input.TouchListener;
  * If other classes needs it, they will get the
  * current information for an ongoing game
  */
-public class PongMachine extends State implements TouchListener, CollisionListener {
-
+public class PongMachine extends State implements TouchListener {
+    // Singleton instance
     private static PongMachine instance;
+
+    // Game State
+    private GameState state;
 
     // Sprites
     private ArrayList<Wall> mWalls = new ArrayList<>();
@@ -36,9 +39,11 @@ public class PongMachine extends State implements TouchListener, CollisionListen
     private Paddle mPaddleTwo;
     private Ball mBall;
 
+    // Constants for this game
     private static final float PERCENTAGE = 0.01f;
     private static final int PADDLE_WIDTH = 60;
-    private static final String TAG = "Pdsaijdasioj";
+
+
 
     private PongMachine() {
         super.addTouchListener(this);
@@ -87,9 +92,22 @@ public class PongMachine extends State implements TouchListener, CollisionListen
                         MainActivity.WINDOW_WIDTH / 2,
                         MainActivity.WINDOW_HEIGHT / 2,
                         MainActivity.WINDOW_HEIGHT);
-        mBall.setSpeed(180f,180f);
 
-        mBall.addCollisionListener(this);
+        reset();
+    }
+
+    public void newRound() {
+        double xDirection = Math.random() * 360 - 180;
+        mBall.setSpeed((float)xDirection, 180f);
+    }
+
+    public void reset() {
+        state = new GameState();
+
+        mPaddleOne.resetPosition();
+        mPaddleTwo.resetPosition();
+
+        newRound();
     }
 
     /*
@@ -171,19 +189,5 @@ public class PongMachine extends State implements TouchListener, CollisionListen
         }
 
         return false;
-    }
-
-    @Override
-    public void collided(Sprite sprite, Sprite other) {
-        if (sprite != mBall) {
-            throw new IllegalArgumentException();
-
-        } else {
-            if (other instanceof Wall) {
-                mBall.handleWallCollision((Wall) other);
-            } else if (other instanceof Paddle) {
-                mBall.handlePaddleCollision((Paddle) other);
-            }
-        }
     }
 }
