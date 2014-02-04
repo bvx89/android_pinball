@@ -2,6 +2,8 @@ package no.ntnu.assignment.two;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -16,7 +18,9 @@ import no.ntnu.assignment.two.wall.WallFactory;
 import sheep.collision.CollisionListener;
 import sheep.game.Sprite;
 import sheep.game.State;
+import sheep.graphics.Font;
 import sheep.graphics.Image;
+import sheep.gui.TextButton;
 import sheep.input.TouchListener;
 
 /**
@@ -43,6 +47,9 @@ public class PongMachine extends State implements TouchListener {
     private static final float PERCENTAGE = 0.01f;
     private static final int PADDLE_WIDTH = 60;
 
+	// Scores
+	private TextButton topScore;
+	private TextButton bottomScore;
 
 
     private PongMachine() {
@@ -52,8 +59,20 @@ public class PongMachine extends State implements TouchListener {
         float lineWidth  = MainActivity.WINDOW_WIDTH  * PERCENTAGE;
         float lineHeight = MainActivity.WINDOW_HEIGHT * PERCENTAGE;
 
+
         // Choose the largest to be the new grid size
         int gridSize = (int)(lineHeight > lineWidth ? lineHeight : lineWidth);
+
+		// Add color for writing scores
+		Paint[] ButtonColors = {
+				new Font(255, 255, 255, 50.0f,
+						Typeface.SANS_SERIF, Typeface.BOLD),
+				new Font(57, 152, 249, 50.0f,
+						Typeface.SANS_SERIF, Typeface.BOLD)
+		};
+		// Creates score labels
+		topScore = new TextButton(2 * gridSize, MainActivity.WINDOW_HEIGHT / 2 - gridSize - 5,"0", ButtonColors);
+		bottomScore = new TextButton(2 * gridSize, MainActivity.WINDOW_HEIGHT / 2 + 50,"0", ButtonColors);
 
         // Create the walls and add them to the array
         Image img = new Image(R.drawable.white_pixel);
@@ -110,6 +129,8 @@ public class PongMachine extends State implements TouchListener {
         // Set it
         mBall.setSpeed(speedX, speedY);
         mBall.setPosition(posX, posY);
+
+
     }
 
     public void reset() {
@@ -117,6 +138,9 @@ public class PongMachine extends State implements TouchListener {
 
         mPaddleOne.resetPosition();
         mPaddleTwo.resetPosition();
+
+		topScore.setLabel("0");
+		bottomScore.setLabel("0");
 
         newRound();
     }
@@ -149,6 +173,15 @@ public class PongMachine extends State implements TouchListener {
 			mBall.handlePaddleCollision(mPaddleTwo);
 		}
 
+		if(mBall.getY() > MainActivity.WINDOW_HEIGHT){
+			topScore.setLabel("" + (Integer.parseInt(topScore.getLabel()) + 1));
+			newRound();
+		}else if(mBall.getY() + mBall.getScale().getY() < 0){
+			bottomScore.setLabel("" + (Integer.parseInt(bottomScore.getLabel()) + 1));
+			newRound();
+		}
+
+
 		for (Wall w : mWalls) {
 			w.update(dt);
 			if(mBall.collides(w))
@@ -170,6 +203,9 @@ public class PongMachine extends State implements TouchListener {
         mPaddleTwo.draw(canvas);
 
         mBall.draw(canvas);
+
+		topScore.draw(canvas);
+		bottomScore.draw(canvas);
     }
 
 
