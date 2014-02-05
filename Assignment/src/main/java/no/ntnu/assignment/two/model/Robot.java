@@ -2,40 +2,45 @@ package no.ntnu.assignment.two.model;
 
 import android.util.Log;
 
+import no.ntnu.assignment.two.Config;
 import sheep.graphics.Image;
 
 /**
  * Created by bvx89 on 2/4/14.
  */
-public class Robot extends Paddle implements BallPositionListener {
-    private static final float SPEED = 200f;
+public class Robot extends Paddle implements PositionListener {
 
-    public Robot(Image image, int boardWidth, int boardHeight, int gridSize, int width, boolean onTop) {
-        super(image, boardWidth, boardHeight, gridSize, width, onTop);
+    public Robot(Image image, boolean onTop) {
+        super(image, onTop);
 
-        setSpeed(SPEED, 0);
+        setSpeed(Config.ROBOT_SPEED, 0);
     }
-
 
     @Override
     public void notifyPosition(float x, float y) {
-        // Get current speed
-        float speedX = getSpeed().getX();
-
         // If ball is to the left
-        if (x < getX() + mWidth / 2) {
-            if (getX() < mGridSize) { // Left wall
-                setXSpeed(SPEED);
+        if (x < getX() + Config.PADDLE_WIDTH / 2) {
+
+            // Left wall
+            if (getX() < Config.GRID_SIZE) {
+                setXSpeed(Config.ROBOT_SPEED);
+
             } else {
-                setXSpeed(SPEED * -1);
+                setXSpeed(Config.ROBOT_SPEED * -1);
             }
 
         // If ball is to the right
-        } else if(x > getX() + mWidth / 2) {
-            if (getX() + mWidth > mBoardWidth + mGridSize) {
-                setXSpeed(SPEED * -1);
+        } else if(x > getX() + Config.PADDLE_WIDTH / 2) {
+
+            // Right wall
+            if (getX() + Config.PADDLE_WIDTH >
+                Config.BOARD_WIDTH - Config.GRID_SIZE* 4) {
+
+                setXSpeed(Config.ROBOT_SPEED * -1);
+
             } else {
-                setXSpeed(SPEED);
+                setXSpeed(Config.ROBOT_SPEED);
+
             }
 
         // Ball is in the normal of the paddle

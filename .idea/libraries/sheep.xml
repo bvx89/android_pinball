@@ -4,6 +4,8 @@
       <root url="jar://$PROJECT_DIR$/Assignment/libs/sheep.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/Assignment/libs/sheep.jar!/" />
+    </SOURCES>
   </library>
 </component>

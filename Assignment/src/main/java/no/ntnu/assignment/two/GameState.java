@@ -44,5 +44,11 @@ public class GameState {
         this.mPlayerOneStarts = mPlayerOneStarts;
     }
 
+    public int incrementPlayerOne() {
+        return ++mPlayerOneScore;
+    }
 
+    public int incrementPlayerTwo() {
+        return ++mPlayerTwoScore;
+    }
 }

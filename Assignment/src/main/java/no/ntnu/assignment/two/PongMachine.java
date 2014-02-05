@@ -2,25 +2,17 @@ package no.ntnu.assignment.two;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
 import no.ntnu.assignment.two.model.Ball;
-import no.ntnu.assignment.two.model.BallPositionListener;
 import no.ntnu.assignment.two.model.Paddle;
 import no.ntnu.assignment.two.model.Player;
 import no.ntnu.assignment.two.model.Robot;
 import no.ntnu.assignment.two.wall.Wall;
 import no.ntnu.assignment.two.wall.WallFactory;
-import sheep.collision.CollisionListener;
-import sheep.game.Sprite;
 import sheep.game.State;
-import sheep.graphics.Font;
 import sheep.graphics.Image;
 import sheep.gui.TextButton;
 import sheep.input.TouchListener;
@@ -45,88 +37,62 @@ public class PongMachine extends State implements TouchListener {
     private Paddle mPaddleTwo;
     private Ball mBall;
 
-    // Constants for this game
-    private static final float PERCENTAGE = 0.01f;
-    private static final int PADDLE_WIDTH = 60;
-
 	// Scores
-	private TextButton topScore;
-	private TextButton bottomScore;
+	private TextButton scoreTop;
+	private TextButton scoreBtm;
 
 
     private PongMachine() {
-        super.addTouchListener(this);
-
-        // Calculate the line width/heights
-        float lineWidth  = MainActivity.WINDOW_WIDTH  * PERCENTAGE;
-        float lineHeight = MainActivity.WINDOW_HEIGHT * PERCENTAGE;
-
-
-        // Choose the largest to be the new grid size
-        int gridSize = (int)(lineHeight > lineWidth ? lineHeight : lineWidth);
-
-		// Add color for writing scores
-		Paint[] ButtonColors = {
-				new Font(255, 255, 255, 50.0f,
-						Typeface.SANS_SERIF, Typeface.BOLD),
-				new Font(57, 152, 249, 50.0f,
-						Typeface.SANS_SERIF, Typeface.BOLD)
-		};
 		// Creates score labels
-		topScore = new TextButton(2 * gridSize, MainActivity.WINDOW_HEIGHT / 2 - gridSize - 5,"0", ButtonColors);
-		bottomScore = new TextButton(2 * gridSize, MainActivity.WINDOW_HEIGHT / 2 + 50,"0", ButtonColors);
+		scoreTop = new TextButton(  Config.GRID_SIZE * 2,
+                                    Config.WINDOW_HEIGHT / 2 - Config.GRID_SIZE - 5,
+                                    "0",
+                                    Config.FONT_SCORE);
 
-        // Create the walls and add them to the array
+		scoreBtm = new TextButton(  Config.GRID_SIZE * 2,
+                                    Config.WINDOW_HEIGHT / 2 + 50,
+                                    "0",
+                                    Config.FONT_SCORE);
+
+        // Get the standard image to be used
         Image img = new Image(R.drawable.white_pixel);
 
+        // Create the walls and add them to the array
         for (int i = 0; i < 3; i++) {
-            mWalls.add(WallFactory.createWall(
-                    i,
-                    img,
-                    MainActivity.WINDOW_WIDTH,
-                    MainActivity.WINDOW_HEIGHT,
-                    gridSize)
-            );
+            mWalls.add(WallFactory.createWall(i, img));
         }
 
 
 
         // Create player
-        int boardWidth = MainActivity.WINDOW_WIDTH - gridSize*2;
-        mPaddleOne = new Player(img,
-                            boardWidth,
-                            MainActivity.WINDOW_HEIGHT,
-                            gridSize,
-                            PADDLE_WIDTH,
-                            false);
+        mPaddleOne = new Player(img, false);
+
+        // Notify Player when touch events occur
+        addTouchListener((Player)mPaddleOne);
 
         // Create player two
-        /*
-        mPaddleTwo = new Player(img,
-                boardWidth,
-                MainActivity.WINDOW_HEIGHT,
-                gridSize,
-                PADDLE_WIDTH,
-                true);
-        */
+        mPaddleTwo = new Robot(img, true);
 
-        mPaddleTwo = new Robot(img,
-                boardWidth,
-                MainActivity.WINDOW_HEIGHT,
-                gridSize,
-                PADDLE_WIDTH,
-                true);
+        // Create the main ball
+        mBall = new Ball(img);
 
-
-
-        mBall = new Ball(img,
-                        gridSize,
-                        MainActivity.WINDOW_WIDTH / 2,
-                        MainActivity.WINDOW_HEIGHT / 2,
-                        MainActivity.WINDOW_HEIGHT);
+        // Notify Robot about each ball position
+        mBall.addPositionListener((Robot)mPaddleTwo);
 
         reset();
     }
+
+    /*
+    * Following the Singleton pattern
+    */
+    public static PongMachine getInstance() {
+        if (instance == null) {
+            instance = new PongMachine();
+        }
+
+        return instance;
+    }
+
 
     public void newRound() {
         // Set new random X-Speed for the ball
@@ -136,8 +102,8 @@ public class PongMachine extends State implements TouchListener {
         float speedY = (state.isPlayerOneStarting() ? -230f : 230f);
 
         // Calculate the ball placement
-        float posX = MainActivity.WINDOW_WIDTH / 2;
-        float posY = MainActivity.WINDOW_HEIGHT / 2;
+        float posX = Config.WINDOW_WIDTH / 2;
+        float posY = Config.WINDOW_HEIGHT / 2;
 
         // Set it
         mBall.setSpeed(speedX, speedY);
@@ -152,24 +118,11 @@ public class PongMachine extends State implements TouchListener {
         mPaddleOne.resetPosition();
         mPaddleTwo.resetPosition();
 
-		topScore.setLabel("0");
-		bottomScore.setLabel("0");
+		scoreTop.setLabel("0");
+		scoreBtm.setLabel("0");
 
         newRound();
     }
-
-    /*
-     * Following the Singleton pattern
-     */
-    public static PongMachine getInstance() {
-        if (instance == null) {
-            instance = new PongMachine();
-        }
-
-        return instance;
-    }
-
-
 
 
     @Override
@@ -180,30 +133,27 @@ public class PongMachine extends State implements TouchListener {
         mPaddleOne.update(dt);
         mPaddleTwo.update(dt);
 
-        // Notify if PaddleOne is robot
-        if (mPaddleOne instanceof Robot) {
-            ((Robot) mPaddleOne).notifyPosition(mBall.getX(), mBall.getY());
-        }
-
-        // Notify if PaddleTwo is robot
-        if (mPaddleTwo instanceof Robot) {
-            ((Robot) mPaddleTwo).notifyPosition(mBall.getX(), mBall.getY());
-        }
-
 		if(mBall.collides(mPaddleOne)){
 			mBall.handlePaddleCollision(mPaddleOne);
 		}else if(mBall.collides(mPaddleTwo)){
 			mBall.handlePaddleCollision(mPaddleTwo);
 		}
 
-		if(mBall.getY() > MainActivity.WINDOW_HEIGHT){
-			topScore.setLabel("" + (Integer.parseInt(topScore.getLabel()) + 1));
+		if(mBall.getY() > Config.WINDOW_HEIGHT){
+            // Save and display score
+            scoreTop.setLabel("" + state.incrementPlayerOne());
+
+            // Restart
             state.setPlayerOneStarting(false);
 			newRound();
+
 		}else if(mBall.getY() + mBall.getScale().getY() < 0){
-			bottomScore.setLabel("" + (Integer.parseInt(bottomScore.getLabel()) + 1));
-            state.setPlayerOneStarting(true);
-			newRound();
+            // Save and display score
+            scoreTop.setLabel("" + state.incrementPlayerTwo());
+
+            // Restart
+            state.setPlayerOneStarting(false);
+            newRound();
 		}
 
 
@@ -229,53 +179,7 @@ public class PongMachine extends State implements TouchListener {
 
         mBall.draw(canvas);
 
-		topScore.draw(canvas);
-		bottomScore.draw(canvas);
-    }
-
-
-    /*
-     * Handling all touch-events to replicate
-     * the movement inside of pong
-     */
-    @Override
-    public boolean onTouchDown(MotionEvent event) {
-        // Event is on top if it's in the upper bound of the screen
-        boolean isTop = event.getY() < MainActivity.WINDOW_HEIGHT / 2;
-
-        // Send event to PaddleOne if in the right section
-        if (mPaddleOne instanceof TouchListener && mPaddleOne.isOnTop() == isTop) {
-            return ((Player) mPaddleOne).onTouchDown(event);
-        }
-
-        // Send event to PaddleTwo if in the right section
-        if (mPaddleTwo instanceof TouchListener && mPaddleTwo.isOnTop() == isTop) {
-            return ((Player) mPaddleTwo).onTouchDown(event);
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean onTouchUp(MotionEvent event) {
-        return false;
-    }
-
-    @Override
-    public boolean onTouchMove(MotionEvent event) {
-        // Event is on top if it's in the upper bound of the screen
-        boolean isTop = event.getY() < MainActivity.WINDOW_HEIGHT / 2;
-
-        // Send event to PaddleOne if in the right section
-        if (mPaddleOne instanceof TouchListener && mPaddleOne.isOnTop() == isTop) {
-            return ((Player) mPaddleOne).onTouchMove(event);
-        }
-
-        // Send event to PaddleTwo if in the right section
-        if (mPaddleTwo instanceof TouchListener && mPaddleTwo.isOnTop() == isTop) {
-            return ((Player) mPaddleTwo).onTouchMove(event);
-        }
-
-        return false;
+		scoreTop.draw(canvas);
+		scoreBtm.draw(canvas);
     }
 }

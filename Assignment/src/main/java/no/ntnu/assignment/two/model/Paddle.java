@@ -3,6 +3,7 @@ package no.ntnu.assignment.two.model;
 import android.graphics.Canvas;
 import android.util.Log;
 
+import no.ntnu.assignment.two.Config;
 import sheep.game.Sprite;
 import sheep.graphics.Image;
 
@@ -10,20 +11,11 @@ import sheep.graphics.Image;
  * Created by bvx89 on 2/4/14.
  */
 public abstract class Paddle extends Sprite {
-    protected int mBoardWidth;
-    protected int mBoardHeight;
-    protected int mGridSize;
-    protected int mWidth;
-
     protected boolean mOnTop;
     private static final String TAG = "TASDAD";
 
-    public Paddle(Image image, int boardWidth, int boardHeight, int gridSize, int width, boolean onTop) {
+    public Paddle(Image image, boolean onTop) {
         super(image);
-        mBoardWidth = boardWidth;
-        mBoardHeight = boardHeight;
-        mGridSize = gridSize;
-        mWidth = width;
 
         mOnTop = onTop;
 
@@ -38,10 +30,12 @@ public abstract class Paddle extends Sprite {
     }
 
     public void resetPosition() {
-        setScale(mWidth, mGridSize);
+        setScale(Config.PADDLE_WIDTH, Config.GRID_SIZE);
 
-        float yPos = (mOnTop ? mGridSize * 3 : mBoardHeight - mGridSize * 5);
-        setPosition((mGridSize * 2 + mBoardWidth) / 2 - mWidth/2, yPos);
+        float yPos = (mOnTop ? Config.GRID_SIZE * 3 :
+                                Config.WINDOW_HEIGHT - Config.GRID_SIZE * 5);
+
+        setPosition((Config.GRID_SIZE * 2 + Config.BOARD_WIDTH) / 2 - Config.PADDLE_WIDTH/2, yPos);
     }
 
 }

@@ -7,10 +7,6 @@ import android.util.DisplayMetrics;
 import sheep.game.Game;
 
 public class MainActivity extends Activity {
-
-    public static int WINDOW_WIDTH;
-    public static int WINDOW_HEIGHT;
-
     private Game mGame;
 
     @Override
@@ -21,8 +17,21 @@ public class MainActivity extends Activity {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        WINDOW_HEIGHT = dm.heightPixels;
-        WINDOW_WIDTH  = dm.widthPixels;
+        // Set main constants
+        Config.WINDOW_HEIGHT = dm.heightPixels;
+        Config.WINDOW_WIDTH  = dm.widthPixels;
+
+        // Calculate the line width/heights
+        float lineWidth  = Config.WINDOW_WIDTH  * Config.PERCENTAGE;
+        float lineHeight = Config.WINDOW_HEIGHT * Config.PERCENTAGE;
+
+
+        // Choose the largest to be the new grid size
+        Config.GRID_SIZE = (int)(lineHeight > lineWidth ? lineHeight : lineWidth);
+
+        // Find the width of the board
+        Config.BOARD_WIDTH = Config.WINDOW_WIDTH - Config.GRID_SIZE * 2;
+
 
         init();
     }

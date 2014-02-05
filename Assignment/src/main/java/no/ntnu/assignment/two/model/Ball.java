@@ -1,5 +1,8 @@
 package no.ntnu.assignment.two.model;
 
+import java.util.ArrayList;
+
+import no.ntnu.assignment.two.Config;
 import no.ntnu.assignment.two.wall.CenterWall;
 import no.ntnu.assignment.two.wall.LeftWall;
 import no.ntnu.assignment.two.wall.RightWall;
@@ -11,15 +14,13 @@ import sheep.math.Vector2;
 /**
  * Created by oknak_000 on 2/4/14.
  */
-public class Ball extends Sprite {
-	private int mHeight;
-	private final float speedIncrease = 1.1f;
+public class Ball extends Sprite implements PositionSubject {
+    private ArrayList<PositionListener> listeners = new ArrayList<>();
 
-	public Ball(Image image, int size, int x, int y, int mHeight){
+	public Ball(Image image){
 		super(image);
-		setScale(size,size);
-		setPosition(x,y);
-		this.mHeight = mHeight;
+		setScale(Config.GRID_SIZE, Config.GRID_SIZE);
+		setPosition(Config.WINDOW_WIDTH/2, Config.WINDOW_HEIGHT/2);
 	}
 
 	public void handleWallCollision(Wall wall){
@@ -34,7 +35,7 @@ public class Ball extends Sprite {
 	public void handlePaddleCollision(Paddle paddle){
 		// Moves paddle center up or down according to what paddle the ball hits
 		float addedCircleCenter = paddle.getScale().getX() / 4;
-		if (paddle.getY() > mHeight / 2)
+		if (paddle.getY() > Config.GRID_SIZE / 2)
 			addedCircleCenter = -addedCircleCenter;
 
 		// Handles collision like paddle is a ball, with center paddle.width / 4 lower than it's actual center to create more interesting ball paths
@@ -43,8 +44,32 @@ public class Ball extends Sprite {
 
 		// Sets new velocity vector, but keeps the same total speed.
 		float length = distance.getLength();
-		setSpeed(distance.getX() / length * getSpeed().getLength() * speedIncrease,
-				distance.getY() / length * getSpeed().getLength()  * speedIncrease);
+		setSpeed(distance.getX() / length * getSpeed().getLength() * Config.BALL_SPEED_INCREASE,
+				distance.getY() / length * getSpeed().getLength()  * Config.BALL_SPEED_INCREASE);
 	}
 
+
+
+    @Override
+    public void update(float dt) {
+        super.update(dt);
+        notifyListeners();
+    }
+
+    @Override
+    public void addPositionListener(PositionListener p) {
+        listeners.add(p);
+    }
+
+    @Override
+    public void removePositionListener(PositionListener p) {
+        listeners.remove(p);
+    }
+
+    @Override
+    public void notifyListeners() {
+        for (PositionListener p : listeners) {
+            p.notifyPosition(getX(), getY());
+        }
+    }
 }

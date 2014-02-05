@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import no.ntnu.assignment.two.Config;
 import sheep.collision.CollisionListener;
 import sheep.game.Sprite;
 import sheep.graphics.Image;
@@ -14,27 +15,35 @@ import sheep.input.TouchListener;
  */
 public class Player extends Paddle implements TouchListener {
 
-    public Player(Image image, int boardWidth, int boardHeight, int gridSize, int width, boolean OnTop) {
-        super(image, boardWidth, boardHeight, gridSize, width, OnTop);
+    public Player(Image image, boolean OnTop) {
+        super(image, OnTop);
     }
 
     public void handleMove(float moveX) {
         float newX;
-        if (moveX - mWidth < mGridSize*2) { // Left
-            newX = mGridSize*2;
-        } else if (moveX + mWidth > mBoardWidth) { // Right
-            newX = mBoardWidth - mWidth * 2 + 1;
+        if (moveX - Config.PADDLE_WIDTH < Config.GRID_SIZE * 2) { // Left
+            newX = Config.GRID_SIZE*2;
+        } else if (moveX + Config.PADDLE_WIDTH > Config.BOARD_WIDTH) { // Right
+            newX = Config.BOARD_WIDTH - Config.PADDLE_WIDTH * 2 + 1;
         } else {
-            newX = moveX - mWidth - 1;
+            newX = moveX - Config.PADDLE_WIDTH - 1;
         }
 
         setPosition(newX, getY());
+
     }
 
     @Override
     public boolean onTouchDown(MotionEvent event) {
-        handleMove(event.getX());
-        return true;
+        // Be sure that the touch is on the right side of the field
+        if (getY() > Config.WINDOW_HEIGHT && !mOnTop ||
+            getY() < Config.WINDOW_HEIGHT && !mOnTop) {
+
+            handleMove(event.getX());
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -44,7 +53,7 @@ public class Player extends Paddle implements TouchListener {
 
     @Override
     public boolean onTouchMove(MotionEvent event) {
-        handleMove(event.getX());
+        onTouchDown(event);
         return true;
     }
 }
